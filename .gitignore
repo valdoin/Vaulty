@@ -1,0 +1,42 @@
+## --- Visual Studio ---
+# Fichiers utilisateur (préférences locales)
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Dossier de cache Visual Studio (très lourd et inutile)
+.vs/
+.vscode/
+
+# Résultats de la compilation (Binaries & Object files)
+[Bb]in/
+[Oo]bj/
+[Oo]ut/
+
+# Fichiers de log
+*.log
+
+## --- C# / .NET ---
+# Fichiers temporaires générés
+*.tmp
+*.bak
+*.swp
+
+# NuGet Packages (on ne commit pas les paquets, on les restaure)
+packages/
+*.nupkg
+
+## --- Windows ---
+# Fichiers système inutiles
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+## --- SPÉCIFIQUE À VOTRE PROJET ---
+# IMPORTANT : Ne jamais commiter la vraie base de données de mots de passe !
+# Si vous créez un fichier de test pour vos mots de passe, ignorez-le ici.
+# Par exemple, si votre fichier s'appelle "ma_base.db" ou "test.kdbx" :
+*.db
+*.kdbx
+*.sqlite
