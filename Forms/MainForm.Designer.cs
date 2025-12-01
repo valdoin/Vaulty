@@ -80,26 +80,28 @@
             // nouveauToolStripMenuItem
             // 
             nouveauToolStripMenuItem.Name = "nouveauToolStripMenuItem";
-            nouveauToolStripMenuItem.Size = new Size(175, 26);
+            nouveauToolStripMenuItem.Size = new Size(224, 26);
             nouveauToolStripMenuItem.Text = "Nouveau";
+            nouveauToolStripMenuItem.Click += nouveauToolStripMenuItem_Click;
             // 
             // ouvrirToolStripMenuItem
             // 
             ouvrirToolStripMenuItem.Name = "ouvrirToolStripMenuItem";
-            ouvrirToolStripMenuItem.Size = new Size(175, 26);
+            ouvrirToolStripMenuItem.Size = new Size(224, 26);
             ouvrirToolStripMenuItem.Text = "Ouvrir";
             // 
             // sauvegarderToolStripMenuItem
             // 
             sauvegarderToolStripMenuItem.Name = "sauvegarderToolStripMenuItem";
-            sauvegarderToolStripMenuItem.Size = new Size(175, 26);
+            sauvegarderToolStripMenuItem.Size = new Size(224, 26);
             sauvegarderToolStripMenuItem.Text = "Sauvegarder";
             // 
             // quitterToolStripMenuItem
             // 
             quitterToolStripMenuItem.Name = "quitterToolStripMenuItem";
-            quitterToolStripMenuItem.Size = new Size(175, 26);
+            quitterToolStripMenuItem.Size = new Size(224, 26);
             quitterToolStripMenuItem.Text = "Quitter";
+            quitterToolStripMenuItem.Click += quitterToolStripMenuItem_Click;
             // 
             // splitContainer1
             // 
@@ -159,7 +161,7 @@
             toolStripButton1.ImageTransparentColor = Color.Magenta;
             toolStripButton1.Name = "toolStripButton1";
             toolStripButton1.Size = new Size(29, 24);
-            toolStripButton1.Text = "toolStripButton1";
+            toolStripButton1.Text = "Ajouter une entrée";
             // 
             // toolStripSeparator1
             // 
@@ -173,7 +175,7 @@
             toolStripButton2.ImageTransparentColor = Color.Magenta;
             toolStripButton2.Name = "toolStripButton2";
             toolStripButton2.Size = new Size(29, 24);
-            toolStripButton2.Text = "toolStripButton2";
+            toolStripButton2.Text = "Copier le nom d'utilisateur";
             // 
             // toolStripButton3
             // 
@@ -182,7 +184,7 @@
             toolStripButton3.ImageTransparentColor = Color.Magenta;
             toolStripButton3.Name = "toolStripButton3";
             toolStripButton3.Size = new Size(29, 24);
-            toolStripButton3.Text = "toolStripButton3";
+            toolStripButton3.Text = "Copier le mot de passe";
             // 
             // toolStripButton4
             // 
@@ -191,7 +193,7 @@
             toolStripButton4.ImageTransparentColor = Color.Magenta;
             toolStripButton4.Name = "toolStripButton4";
             toolStripButton4.Size = new Size(29, 24);
-            toolStripButton4.Text = "toolStripButton4";
+            toolStripButton4.Text = "Copier l'URL";
             // 
             // toolStripSeparator2
             // 
@@ -205,7 +207,7 @@
             toolStripButton5.ImageTransparentColor = Color.Magenta;
             toolStripButton5.Name = "toolStripButton5";
             toolStripButton5.Size = new Size(29, 24);
-            toolStripButton5.Text = "toolStripButton5";
+            toolStripButton5.Text = "Chercher une entrée";
             // 
             // MainForm
             // 
