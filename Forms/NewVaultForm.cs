@@ -10,25 +10,33 @@ using System.Windows.Forms;
 
 namespace Vaulty.Forms
 {
-    public partial class MasterPasswordForm : Form
+    public partial class NewVaultForm : Form
     {
         public string EnteredPassword { get; private set; }
-        public MasterPasswordForm()
+        public string VaultName { get; private set; }
+        public NewVaultForm()
         {
             InitializeComponent();
         }
 
         private void buttonConfirm_Click(object sender, EventArgs e)
         {
+            string name = textBoxVaultName.Text;
             string pass = textBoxMasterPassword.Text;
             string confirm = textBoxConfirmPassword.Text;
 
             //textbox vide ?
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                MessageBox.Show("Veuillez donner un nom à votre coffre.", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
             if (string.IsNullOrWhiteSpace(pass))
             {
                 MessageBox.Show("Le mot de passe ne peut pas être vide.", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
+
 
             //mdp identiques ?
             if (pass != confirm)
@@ -40,6 +48,7 @@ namespace Vaulty.Forms
             }
 
             //si ca passe les deux vérifications
+            this.VaultName = name.Trim();
             this.EnteredPassword = pass; //on sauvegarde le mdp en memoire pour le moment
             this.DialogResult = DialogResult.OK;
             this.Close();

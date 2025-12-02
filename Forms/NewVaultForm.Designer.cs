@@ -1,6 +1,6 @@
 ﻿namespace Vaulty.Forms
 {
-    partial class MasterPasswordForm
+    partial class NewVaultForm
     {
         /// <summary>
         /// Required designer variable.
@@ -34,12 +34,14 @@
             textBoxConfirmPassword = new TextBox();
             buttonCancel = new Button();
             buttonConfirm = new Button();
+            labelVaultName = new Label();
+            textBoxVaultName = new TextBox();
             SuspendLayout();
             // 
             // labelMasterPassword
             // 
             labelMasterPassword.AutoSize = true;
-            labelMasterPassword.Location = new Point(12, 95);
+            labelMasterPassword.Location = new Point(12, 101);
             labelMasterPassword.Name = "labelMasterPassword";
             labelMasterPassword.Size = new Size(292, 20);
             labelMasterPassword.TabIndex = 0;
@@ -47,16 +49,16 @@
             // 
             // textBoxMasterPassword
             // 
-            textBoxMasterPassword.Location = new Point(310, 92);
+            textBoxMasterPassword.Location = new Point(310, 98);
             textBoxMasterPassword.Name = "textBoxMasterPassword";
             textBoxMasterPassword.Size = new Size(246, 27);
-            textBoxMasterPassword.TabIndex = 1;
+            textBoxMasterPassword.TabIndex = 2;
             textBoxMasterPassword.UseSystemPasswordChar = true;
             // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(12, 137);
+            label1.Location = new Point(12, 143);
             label1.Name = "label1";
             label1.Size = new Size(240, 20);
             label1.TabIndex = 2;
@@ -64,7 +66,7 @@
             // 
             // textBoxConfirmPassword
             // 
-            textBoxConfirmPassword.Location = new Point(258, 134);
+            textBoxConfirmPassword.Location = new Point(258, 140);
             textBoxConfirmPassword.Name = "textBoxConfirmPassword";
             textBoxConfirmPassword.Size = new Size(248, 27);
             textBoxConfirmPassword.TabIndex = 3;
@@ -72,7 +74,7 @@
             // 
             // buttonCancel
             // 
-            buttonCancel.Location = new Point(258, 206);
+            buttonCancel.Location = new Point(258, 212);
             buttonCancel.Name = "buttonCancel";
             buttonCancel.Size = new Size(94, 29);
             buttonCancel.TabIndex = 4;
@@ -82,7 +84,7 @@
             // 
             // buttonConfirm
             // 
-            buttonConfirm.Location = new Point(412, 206);
+            buttonConfirm.Location = new Point(412, 212);
             buttonConfirm.Name = "buttonConfirm";
             buttonConfirm.Size = new Size(94, 29);
             buttonConfirm.TabIndex = 5;
@@ -90,19 +92,42 @@
             buttonConfirm.UseVisualStyleBackColor = true;
             buttonConfirm.Click += buttonConfirm_Click;
             // 
-            // MasterPasswordForm
+            // labelVaultName
             // 
+            labelVaultName.AutoSize = true;
+            labelVaultName.Location = new Point(12, 56);
+            labelVaultName.Name = "labelVaultName";
+            labelVaultName.Size = new Size(147, 20);
+            labelVaultName.TabIndex = 6;
+            labelVaultName.Text = "Nom du coffre-fort : ";
+            // 
+            // textBoxVaultName
+            // 
+            textBoxVaultName.Location = new Point(165, 53);
+            textBoxVaultName.Name = "textBoxVaultName";
+            textBoxVaultName.Size = new Size(284, 27);
+            textBoxVaultName.TabIndex = 1;
+            // 
+            // NewVaultForm
+            // 
+            AcceptButton = buttonConfirm;
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(707, 306);
+            CancelButton = buttonCancel;
+            ClientSize = new Size(678, 284);
+            Controls.Add(textBoxVaultName);
+            Controls.Add(labelVaultName);
             Controls.Add(buttonConfirm);
             Controls.Add(buttonCancel);
             Controls.Add(textBoxConfirmPassword);
             Controls.Add(label1);
             Controls.Add(textBoxMasterPassword);
             Controls.Add(labelMasterPassword);
-            Name = "MasterPasswordForm";
-            Text = "MasterPasswordForm";
+            FormBorderStyle = FormBorderStyle.FixedDialog;
+            MaximizeBox = false;
+            Name = "NewVaultForm";
+            StartPosition = FormStartPosition.CenterParent;
+            Text = "Nouveau coffre-fort";
             ResumeLayout(false);
             PerformLayout();
         }
@@ -115,5 +140,7 @@
         private TextBox textBoxConfirmPassword;
         private Button buttonCancel;
         private Button buttonConfirm;
+        private Label labelVaultName;
+        private TextBox textBoxVaultName;
     }
 }

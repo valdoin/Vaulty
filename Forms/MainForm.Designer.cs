@@ -28,46 +28,64 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            menuStrip1 = new MenuStrip();
+            menuStrip1File = new MenuStrip();
             fichierToolStripMenuItem = new ToolStripMenuItem();
             nouveauToolStripMenuItem = new ToolStripMenuItem();
             ouvrirToolStripMenuItem = new ToolStripMenuItem();
             sauvegarderToolStripMenuItem = new ToolStripMenuItem();
             quitterToolStripMenuItem = new ToolStripMenuItem();
             splitContainer1 = new SplitContainer();
-            treeViewTags = new TreeView();
+            treeViewGroups = new TreeView();
             listViewEntries = new ListView();
             Titre = new ColumnHeader();
             Login = new ColumnHeader();
             MotDePasse = new ColumnHeader();
             URL = new ColumnHeader();
             Notes = new ColumnHeader();
-            toolStrip1 = new ToolStrip();
-            toolStripButton1 = new ToolStripButton();
+            contextMenuStripAddDeleteGroup = new ContextMenuStrip(components);
+            ajouterUneCatégorieToolStripMenuItem = new ToolStripMenuItem();
+            supprimerLaCatégorieToolStripMenuItem = new ToolStripMenuItem();
+            toolStripUtils = new ToolStrip();
+            buttonAddEntry = new ToolStripButton();
             toolStripSeparator1 = new ToolStripSeparator();
-            toolStripButton2 = new ToolStripButton();
-            toolStripButton3 = new ToolStripButton();
-            toolStripButton4 = new ToolStripButton();
+            buttonCopyUsername = new ToolStripButton();
+            buttonCopyPassword = new ToolStripButton();
+            buttonCopyURL = new ToolStripButton();
             toolStripSeparator2 = new ToolStripSeparator();
-            toolStripButton5 = new ToolStripButton();
-            menuStrip1.SuspendLayout();
+            buttonFindEntry = new ToolStripButton();
+            contextMenuStripEntries = new ContextMenuStrip(components);
+            ajouterUneEntréeToolStripMenuItem = new ToolStripMenuItem();
+            supprimerLentréeToolStripMenuItem = new ToolStripMenuItem();
+            modifierLentréeToolStripMenuItem = new ToolStripMenuItem();
+            copierLeNomDutilisateurToolStripMenuItem = new ToolStripMenuItem();
+            copierLeMotDePasseToolStripMenuItem = new ToolStripMenuItem();
+            copierLURLToolStripMenuItem = new ToolStripMenuItem();
+            CopyTimer = new System.Windows.Forms.Timer(components);
+            statusStripCopy = new StatusStrip();
+            toolStripStatusLabelCopy = new ToolStripStatusLabel();
+            toolStripProgressBarCopy = new ToolStripProgressBar();
+            menuStrip1File.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
             splitContainer1.SuspendLayout();
-            toolStrip1.SuspendLayout();
+            contextMenuStripAddDeleteGroup.SuspendLayout();
+            toolStripUtils.SuspendLayout();
+            contextMenuStripEntries.SuspendLayout();
+            statusStripCopy.SuspendLayout();
             SuspendLayout();
             // 
-            // menuStrip1
+            // menuStrip1File
             // 
-            menuStrip1.ImageScalingSize = new Size(20, 20);
-            menuStrip1.Items.AddRange(new ToolStripItem[] { fichierToolStripMenuItem });
-            menuStrip1.Location = new Point(0, 0);
-            menuStrip1.Name = "menuStrip1";
-            menuStrip1.Size = new Size(1378, 28);
-            menuStrip1.TabIndex = 0;
-            menuStrip1.Text = "menuStrip1";
+            menuStrip1File.ImageScalingSize = new Size(20, 20);
+            menuStrip1File.Items.AddRange(new ToolStripItem[] { fichierToolStripMenuItem });
+            menuStrip1File.Location = new Point(0, 0);
+            menuStrip1File.Name = "menuStrip1File";
+            menuStrip1File.Size = new Size(1378, 28);
+            menuStrip1File.TabIndex = 0;
+            menuStrip1File.Text = "menuStrip1";
             // 
             // fichierToolStripMenuItem
             // 
@@ -75,31 +93,30 @@
             fichierToolStripMenuItem.Name = "fichierToolStripMenuItem";
             fichierToolStripMenuItem.Size = new Size(66, 24);
             fichierToolStripMenuItem.Text = "Fichier";
-            fichierToolStripMenuItem.Click += fichierToolStripMenuItem_Click;
             // 
             // nouveauToolStripMenuItem
             // 
             nouveauToolStripMenuItem.Name = "nouveauToolStripMenuItem";
-            nouveauToolStripMenuItem.Size = new Size(224, 26);
+            nouveauToolStripMenuItem.Size = new Size(175, 26);
             nouveauToolStripMenuItem.Text = "Nouveau";
             nouveauToolStripMenuItem.Click += nouveauToolStripMenuItem_Click;
             // 
             // ouvrirToolStripMenuItem
             // 
             ouvrirToolStripMenuItem.Name = "ouvrirToolStripMenuItem";
-            ouvrirToolStripMenuItem.Size = new Size(224, 26);
+            ouvrirToolStripMenuItem.Size = new Size(175, 26);
             ouvrirToolStripMenuItem.Text = "Ouvrir";
             // 
             // sauvegarderToolStripMenuItem
             // 
             sauvegarderToolStripMenuItem.Name = "sauvegarderToolStripMenuItem";
-            sauvegarderToolStripMenuItem.Size = new Size(224, 26);
+            sauvegarderToolStripMenuItem.Size = new Size(175, 26);
             sauvegarderToolStripMenuItem.Text = "Sauvegarder";
             // 
             // quitterToolStripMenuItem
             // 
             quitterToolStripMenuItem.Name = "quitterToolStripMenuItem";
-            quitterToolStripMenuItem.Size = new Size(224, 26);
+            quitterToolStripMenuItem.Size = new Size(175, 26);
             quitterToolStripMenuItem.Text = "Quitter";
             quitterToolStripMenuItem.Click += quitterToolStripMenuItem_Click;
             // 
@@ -111,150 +128,295 @@
             // 
             // splitContainer1.Panel1
             // 
-            splitContainer1.Panel1.Controls.Add(treeViewTags);
-            splitContainer1.Panel1.Paint += splitContainer1_Panel1_Paint;
+            splitContainer1.Panel1.Controls.Add(treeViewGroups);
             // 
             // splitContainer1.Panel2
             // 
             splitContainer1.Panel2.Controls.Add(listViewEntries);
-            splitContainer1.Panel2.Paint += splitContainer1_Panel2_Paint;
             splitContainer1.Size = new Size(1378, 743);
             splitContainer1.SplitterDistance = 459;
             splitContainer1.TabIndex = 1;
             // 
-            // treeViewTags
+            // treeViewGroups
             // 
-            treeViewTags.Dock = DockStyle.Fill;
-            treeViewTags.Location = new Point(0, 0);
-            treeViewTags.Name = "treeViewTags";
-            treeViewTags.Size = new Size(459, 743);
-            treeViewTags.TabIndex = 0;
+            treeViewGroups.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            treeViewGroups.Location = new Point(0, 30);
+            treeViewGroups.Name = "treeViewGroups";
+            treeViewGroups.Size = new Size(459, 713);
+            treeViewGroups.TabIndex = 0;
+            treeViewGroups.AfterSelect += treeViewCategories_AfterSelect;
+            treeViewGroups.MouseUp += treeViewGroups_MouseUp;
             // 
             // listViewEntries
             // 
+            listViewEntries.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
             listViewEntries.Columns.AddRange(new ColumnHeader[] { Titre, Login, MotDePasse, URL, Notes });
-            listViewEntries.Dock = DockStyle.Fill;
-            listViewEntries.Location = new Point(0, 0);
+            listViewEntries.FullRowSelect = true;
+            listViewEntries.GridLines = true;
+            listViewEntries.Location = new Point(0, 30);
             listViewEntries.Name = "listViewEntries";
-            listViewEntries.Size = new Size(915, 743);
+            listViewEntries.Size = new Size(802, 713);
             listViewEntries.TabIndex = 0;
             listViewEntries.UseCompatibleStateImageBehavior = false;
+            listViewEntries.View = View.Details;
+            listViewEntries.SelectedIndexChanged += listViewEntries_SelectedIndexChanged;
+            listViewEntries.MouseUp += listViewEntries_MouseUp;
             // 
             // Titre
             // 
             Titre.Tag = "";
+            Titre.Text = "Titre";
+            Titre.Width = 160;
             // 
-            // toolStrip1
+            // Login
             // 
-            toolStrip1.ImageScalingSize = new Size(20, 20);
-            toolStrip1.Items.AddRange(new ToolStripItem[] { toolStripButton1, toolStripSeparator1, toolStripButton2, toolStripButton3, toolStripButton4, toolStripSeparator2, toolStripButton5 });
-            toolStrip1.Location = new Point(0, 28);
-            toolStrip1.Name = "toolStrip1";
-            toolStrip1.Size = new Size(1378, 27);
-            toolStrip1.TabIndex = 2;
-            toolStrip1.Text = "toolStrip1";
+            Login.Text = "Login";
+            Login.Width = 160;
             // 
-            // toolStripButton1
+            // MotDePasse
             // 
-            toolStripButton1.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            toolStripButton1.Image = (Image)resources.GetObject("toolStripButton1.Image");
-            toolStripButton1.ImageTransparentColor = Color.Magenta;
-            toolStripButton1.Name = "toolStripButton1";
-            toolStripButton1.Size = new Size(29, 24);
-            toolStripButton1.Text = "Ajouter une entrée";
+            MotDePasse.Text = "Mot de passe";
+            MotDePasse.Width = 160;
+            // 
+            // URL
+            // 
+            URL.Text = "URL";
+            URL.Width = 160;
+            // 
+            // Notes
+            // 
+            Notes.Text = "Notes";
+            Notes.Width = 160;
+            // 
+            // contextMenuStripAddDeleteGroup
+            // 
+            contextMenuStripAddDeleteGroup.ImageScalingSize = new Size(20, 20);
+            contextMenuStripAddDeleteGroup.Items.AddRange(new ToolStripItem[] { ajouterUneCatégorieToolStripMenuItem, supprimerLaCatégorieToolStripMenuItem });
+            contextMenuStripAddDeleteGroup.Name = "contextMenuStrip1";
+            contextMenuStripAddDeleteGroup.Size = new Size(231, 52);
+            // 
+            // ajouterUneCatégorieToolStripMenuItem
+            // 
+            ajouterUneCatégorieToolStripMenuItem.Name = "ajouterUneCatégorieToolStripMenuItem";
+            ajouterUneCatégorieToolStripMenuItem.Size = new Size(230, 24);
+            ajouterUneCatégorieToolStripMenuItem.Text = "Ajouter une catégorie";
+            ajouterUneCatégorieToolStripMenuItem.Click += ajouterUneCatégorieToolStripMenuItem_Click;
+            // 
+            // supprimerLaCatégorieToolStripMenuItem
+            // 
+            supprimerLaCatégorieToolStripMenuItem.Name = "supprimerLaCatégorieToolStripMenuItem";
+            supprimerLaCatégorieToolStripMenuItem.Size = new Size(230, 24);
+            supprimerLaCatégorieToolStripMenuItem.Text = "Supprimer la catégorie";
+            supprimerLaCatégorieToolStripMenuItem.Click += supprimerLaCatégorieToolStripMenuItem_Click;
+            // 
+            // toolStripUtils
+            // 
+            toolStripUtils.ImageScalingSize = new Size(20, 20);
+            toolStripUtils.Items.AddRange(new ToolStripItem[] { buttonAddEntry, toolStripSeparator1, buttonCopyUsername, buttonCopyPassword, buttonCopyURL, toolStripSeparator2, buttonFindEntry });
+            toolStripUtils.Location = new Point(0, 28);
+            toolStripUtils.Name = "toolStripUtils";
+            toolStripUtils.Size = new Size(1378, 27);
+            toolStripUtils.TabIndex = 2;
+            toolStripUtils.Text = "toolStrip1";
+            // 
+            // buttonAddEntry
+            // 
+            buttonAddEntry.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            buttonAddEntry.Image = (Image)resources.GetObject("buttonAddEntry.Image");
+            buttonAddEntry.ImageTransparentColor = Color.Magenta;
+            buttonAddEntry.Name = "buttonAddEntry";
+            buttonAddEntry.Size = new Size(29, 24);
+            buttonAddEntry.Text = "Ajouter une entrée";
+            buttonAddEntry.Click += buttonAddEntry_Click;
             // 
             // toolStripSeparator1
             // 
             toolStripSeparator1.Name = "toolStripSeparator1";
             toolStripSeparator1.Size = new Size(6, 27);
             // 
-            // toolStripButton2
+            // buttonCopyUsername
             // 
-            toolStripButton2.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            toolStripButton2.Image = (Image)resources.GetObject("toolStripButton2.Image");
-            toolStripButton2.ImageTransparentColor = Color.Magenta;
-            toolStripButton2.Name = "toolStripButton2";
-            toolStripButton2.Size = new Size(29, 24);
-            toolStripButton2.Text = "Copier le nom d'utilisateur";
+            buttonCopyUsername.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            buttonCopyUsername.Image = (Image)resources.GetObject("buttonCopyUsername.Image");
+            buttonCopyUsername.ImageTransparentColor = Color.Magenta;
+            buttonCopyUsername.Name = "buttonCopyUsername";
+            buttonCopyUsername.Size = new Size(29, 24);
+            buttonCopyUsername.Text = "Copier le nom d'utilisateur";
+            buttonCopyUsername.Click += copierLeNomDutilisateurToolStripMenuItem_Click;
             // 
-            // toolStripButton3
+            // buttonCopyPassword
             // 
-            toolStripButton3.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            toolStripButton3.Image = (Image)resources.GetObject("toolStripButton3.Image");
-            toolStripButton3.ImageTransparentColor = Color.Magenta;
-            toolStripButton3.Name = "toolStripButton3";
-            toolStripButton3.Size = new Size(29, 24);
-            toolStripButton3.Text = "Copier le mot de passe";
+            buttonCopyPassword.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            buttonCopyPassword.Image = (Image)resources.GetObject("buttonCopyPassword.Image");
+            buttonCopyPassword.ImageTransparentColor = Color.Magenta;
+            buttonCopyPassword.Name = "buttonCopyPassword";
+            buttonCopyPassword.Size = new Size(29, 24);
+            buttonCopyPassword.Text = "Copier le mot de passe";
+            buttonCopyPassword.Click += copierLeMotDePasseToolStripMenuItem_Click;
             // 
-            // toolStripButton4
+            // buttonCopyURL
             // 
-            toolStripButton4.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            toolStripButton4.Image = (Image)resources.GetObject("toolStripButton4.Image");
-            toolStripButton4.ImageTransparentColor = Color.Magenta;
-            toolStripButton4.Name = "toolStripButton4";
-            toolStripButton4.Size = new Size(29, 24);
-            toolStripButton4.Text = "Copier l'URL";
+            buttonCopyURL.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            buttonCopyURL.Image = (Image)resources.GetObject("buttonCopyURL.Image");
+            buttonCopyURL.ImageTransparentColor = Color.Magenta;
+            buttonCopyURL.Name = "buttonCopyURL";
+            buttonCopyURL.Size = new Size(29, 24);
+            buttonCopyURL.Text = "Copier l'URL";
+            buttonCopyURL.Click += copierLURLToolStripMenuItem_Click;
             // 
             // toolStripSeparator2
             // 
             toolStripSeparator2.Name = "toolStripSeparator2";
             toolStripSeparator2.Size = new Size(6, 27);
             // 
-            // toolStripButton5
+            // buttonFindEntry
             // 
-            toolStripButton5.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            toolStripButton5.Image = (Image)resources.GetObject("toolStripButton5.Image");
-            toolStripButton5.ImageTransparentColor = Color.Magenta;
-            toolStripButton5.Name = "toolStripButton5";
-            toolStripButton5.Size = new Size(29, 24);
-            toolStripButton5.Text = "Chercher une entrée";
+            buttonFindEntry.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            buttonFindEntry.Image = (Image)resources.GetObject("buttonFindEntry.Image");
+            buttonFindEntry.ImageTransparentColor = Color.Magenta;
+            buttonFindEntry.Name = "buttonFindEntry";
+            buttonFindEntry.Size = new Size(29, 24);
+            buttonFindEntry.Text = "Chercher une entrée";
+            // 
+            // contextMenuStripEntries
+            // 
+            contextMenuStripEntries.ImageScalingSize = new Size(20, 20);
+            contextMenuStripEntries.Items.AddRange(new ToolStripItem[] { ajouterUneEntréeToolStripMenuItem, supprimerLentréeToolStripMenuItem, modifierLentréeToolStripMenuItem, copierLeNomDutilisateurToolStripMenuItem, copierLeMotDePasseToolStripMenuItem, copierLURLToolStripMenuItem });
+            contextMenuStripEntries.Name = "contextMenuStripEntries";
+            contextMenuStripEntries.Size = new Size(254, 148);
+            // 
+            // ajouterUneEntréeToolStripMenuItem
+            // 
+            ajouterUneEntréeToolStripMenuItem.Name = "ajouterUneEntréeToolStripMenuItem";
+            ajouterUneEntréeToolStripMenuItem.Size = new Size(253, 24);
+            ajouterUneEntréeToolStripMenuItem.Text = "Ajouter une entrée";
+            ajouterUneEntréeToolStripMenuItem.Click += ajouterUneEntréeToolStripMenuItem_Click;
+            // 
+            // supprimerLentréeToolStripMenuItem
+            // 
+            supprimerLentréeToolStripMenuItem.Name = "supprimerLentréeToolStripMenuItem";
+            supprimerLentréeToolStripMenuItem.Size = new Size(253, 24);
+            supprimerLentréeToolStripMenuItem.Text = "Supprimer l'entrée";
+            supprimerLentréeToolStripMenuItem.Click += supprimerLentréeToolStripMenuItem_Click;
+            // 
+            // modifierLentréeToolStripMenuItem
+            // 
+            modifierLentréeToolStripMenuItem.Name = "modifierLentréeToolStripMenuItem";
+            modifierLentréeToolStripMenuItem.Size = new Size(253, 24);
+            modifierLentréeToolStripMenuItem.Text = "Modifier l'entrée";
+            modifierLentréeToolStripMenuItem.Click += modifierLentréeToolStripMenuItem_Click;
+            // 
+            // copierLeNomDutilisateurToolStripMenuItem
+            // 
+            copierLeNomDutilisateurToolStripMenuItem.Name = "copierLeNomDutilisateurToolStripMenuItem";
+            copierLeNomDutilisateurToolStripMenuItem.Size = new Size(253, 24);
+            copierLeNomDutilisateurToolStripMenuItem.Text = "Copier le nom d'utilisateur";
+            copierLeNomDutilisateurToolStripMenuItem.Click += copierLeNomDutilisateurToolStripMenuItem_Click;
+            // 
+            // copierLeMotDePasseToolStripMenuItem
+            // 
+            copierLeMotDePasseToolStripMenuItem.Name = "copierLeMotDePasseToolStripMenuItem";
+            copierLeMotDePasseToolStripMenuItem.Size = new Size(253, 24);
+            copierLeMotDePasseToolStripMenuItem.Text = "Copier le mot de passe";
+            copierLeMotDePasseToolStripMenuItem.Click += copierLeMotDePasseToolStripMenuItem_Click;
+            // 
+            // copierLURLToolStripMenuItem
+            // 
+            copierLURLToolStripMenuItem.Name = "copierLURLToolStripMenuItem";
+            copierLURLToolStripMenuItem.Size = new Size(253, 24);
+            copierLURLToolStripMenuItem.Text = "Copier l'URL";
+            copierLURLToolStripMenuItem.Click += copierLURLToolStripMenuItem_Click;
+            // 
+            // CopyTimer
+            // 
+            CopyTimer.Interval = 1000;
+            CopyTimer.Tick += CopyTimer_Tick;
+            // 
+            // statusStripCopy
+            // 
+            statusStripCopy.ImageScalingSize = new Size(20, 20);
+            statusStripCopy.Items.AddRange(new ToolStripItem[] { toolStripStatusLabelCopy, toolStripProgressBarCopy });
+            statusStripCopy.Location = new Point(0, 747);
+            statusStripCopy.Name = "statusStripCopy";
+            statusStripCopy.Size = new Size(1378, 24);
+            statusStripCopy.TabIndex = 3;
+            statusStripCopy.Text = "statusStrip1";
+            // 
+            // toolStripStatusLabelCopy
+            // 
+            toolStripStatusLabelCopy.Name = "toolStripStatusLabelCopy";
+            toolStripStatusLabelCopy.Size = new Size(0, 18);
+            // 
+            // toolStripProgressBarCopy
+            // 
+            toolStripProgressBarCopy.Name = "toolStripProgressBarCopy";
+            toolStripProgressBarCopy.Size = new Size(100, 16);
             // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1378, 771);
-            Controls.Add(toolStrip1);
+            Controls.Add(toolStripUtils);
+            Controls.Add(statusStripCopy);
             Controls.Add(splitContainer1);
-            Controls.Add(menuStrip1);
-            MainMenuStrip = menuStrip1;
+            Controls.Add(menuStrip1File);
+            MainMenuStrip = menuStrip1File;
             Name = "MainForm";
             Text = "Vaulty";
-            menuStrip1.ResumeLayout(false);
-            menuStrip1.PerformLayout();
+            menuStrip1File.ResumeLayout(false);
+            menuStrip1File.PerformLayout();
             splitContainer1.Panel1.ResumeLayout(false);
             splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)splitContainer1).EndInit();
             splitContainer1.ResumeLayout(false);
-            toolStrip1.ResumeLayout(false);
-            toolStrip1.PerformLayout();
+            contextMenuStripAddDeleteGroup.ResumeLayout(false);
+            toolStripUtils.ResumeLayout(false);
+            toolStripUtils.PerformLayout();
+            contextMenuStripEntries.ResumeLayout(false);
+            statusStripCopy.ResumeLayout(false);
+            statusStripCopy.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
 
-        private MenuStrip menuStrip1;
+        private MenuStrip menuStrip1File;
         private ToolStripMenuItem fichierToolStripMenuItem;
         private ToolStripMenuItem nouveauToolStripMenuItem;
         private ToolStripMenuItem ouvrirToolStripMenuItem;
         private ToolStripMenuItem sauvegarderToolStripMenuItem;
         private ToolStripMenuItem quitterToolStripMenuItem;
         private SplitContainer splitContainer1;
-        private TreeView treeViewTags;
+        private TreeView treeViewGroups;
         private ListView listViewEntries;
         private ColumnHeader Titre;
         private ColumnHeader Login;
         private ColumnHeader MotDePasse;
         private ColumnHeader URL;
         private ColumnHeader Notes;
-        private ToolStrip toolStrip1;
-        private ToolStripButton toolStripButton1;
+        private ToolStrip toolStripUtils;
+        private ToolStripButton buttonAddEntry;
         private ToolStripSeparator toolStripSeparator1;
-        private ToolStripButton toolStripButton2;
-        private ToolStripButton toolStripButton3;
-        private ToolStripButton toolStripButton4;
+        private ToolStripButton buttonCopyUsername;
+        private ToolStripButton buttonCopyPassword;
+        private ToolStripButton buttonCopyURL;
         private ToolStripSeparator toolStripSeparator2;
-        private ToolStripButton toolStripButton5;
+        private ToolStripButton buttonFindEntry;
+        private ContextMenuStrip contextMenuStripAddDeleteGroup;
+        private ToolStripMenuItem ajouterUneCatégorieToolStripMenuItem;
+        private ToolStripMenuItem supprimerLaCatégorieToolStripMenuItem;
+        private ContextMenuStrip contextMenuStripEntries;
+        private ToolStripMenuItem ajouterUneEntréeToolStripMenuItem;
+        private ToolStripMenuItem supprimerLentréeToolStripMenuItem;
+        private ToolStripMenuItem modifierLentréeToolStripMenuItem;
+        private ToolStripMenuItem copierLeNomDutilisateurToolStripMenuItem;
+        private ToolStripMenuItem copierLeMotDePasseToolStripMenuItem;
+        private ToolStripMenuItem copierLURLToolStripMenuItem;
+        private System.Windows.Forms.Timer CopyTimer;
+        private StatusStrip statusStripCopy;
+        private ToolStripStatusLabel toolStripStatusLabelCopy;
+        private ToolStripProgressBar toolStripProgressBarCopy;
     }
 }
