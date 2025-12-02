@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AddEditEntryForm));
             labelTitle = new Label();
             labelUsername = new Label();
             labelPassword = new Label();
@@ -219,6 +220,7 @@
             Controls.Add(labelUsername);
             Controls.Add(labelTitle);
             FormBorderStyle = FormBorderStyle.FixedDialog;
+            Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
             Name = "AddEditEntryForm";
             StartPosition = FormStartPosition.CenterParent;

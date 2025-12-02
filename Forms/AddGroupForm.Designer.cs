@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AddGroupForm));
             labelGroupName = new Label();
             textBoxGroupName = new TextBox();
             buttonCancel = new Button();
@@ -69,7 +70,7 @@
             buttonOK.UseVisualStyleBackColor = true;
             buttonOK.Click += buttonOK_Click;
             // 
-            // AddCategoryForm
+            // AddGroupForm
             // 
             AcceptButton = buttonOK;
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -81,8 +82,9 @@
             Controls.Add(textBoxGroupName);
             Controls.Add(labelGroupName);
             FormBorderStyle = FormBorderStyle.FixedDialog;
+            Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
-            Name = "AddCategoryForm";
+            Name = "AddGroupForm";
             Text = "Nouvelle catégorie";
             ResumeLayout(false);
             PerformLayout();

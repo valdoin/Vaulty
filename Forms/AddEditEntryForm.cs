@@ -47,7 +47,7 @@ namespace Vaulty.Forms
                 //par defaut on prend le premier pour eviter les erreurs
                 else if (comboBoxGroup.Items.Count > 0)
                 {
-                    
+
                     comboBoxGroup.SelectedIndex = 0;
                 }
             }

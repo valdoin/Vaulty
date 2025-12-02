@@ -370,6 +370,7 @@
             Controls.Add(statusStripCopy);
             Controls.Add(splitContainer1);
             Controls.Add(menuStrip1File);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             MainMenuStrip = menuStrip1File;
             Name = "MainForm";
             Text = "Vaulty";

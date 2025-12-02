@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(NewVaultForm));
             labelMasterPassword = new Label();
             textBoxMasterPassword = new TextBox();
             label1 = new Label();
@@ -124,6 +125,7 @@
             Controls.Add(textBoxMasterPassword);
             Controls.Add(labelMasterPassword);
             FormBorderStyle = FormBorderStyle.FixedDialog;
+            Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
             Name = "NewVaultForm";
             StartPosition = FormStartPosition.CenterParent;
