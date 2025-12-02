@@ -10,6 +10,7 @@ namespace Vaulty
         private List<PasswordEntry> database = new List<PasswordEntry>(); //on stocke les mdp en memoire avant de les stocker dans le fichier chiffré
         private string masterPasswordHash = "";
         private List<string> groups = new List<string>();
+        private string currentSearchTerm = "";
         public MainForm()
 
         {
@@ -75,23 +76,35 @@ namespace Vaulty
         {
             listViewEntries.Items.Clear();
 
-            if (treeViewGroups.SelectedNode == null) return;
-
-            string selectedCategory = treeViewGroups.SelectedNode.Text;
-
             List<PasswordEntry> filteredList;
 
-            //si racine sélectionnée => tout afficher, sinon filtrer
-            if (selectedCategory == this.currentVaultName)
+            //recherche en cours
+            if (!string.IsNullOrWhiteSpace(currentSearchTerm))
             {
-                filteredList = database;
+                string term = currentSearchTerm.ToLower(); //recherche insensible a la casse
+                //on cherche dans toute la base, recherche sur le titre, l'username et les notes s'il y en a 
+                filteredList = database.Where(entry =>
+                    (entry.Title != null && entry.Title.ToLower().Contains(term)) ||
+                    (entry.Username != null && entry.Username.ToLower().Contains(term)) ||
+                    (entry.Notes != null && entry.Notes.ToLower().Contains(term))
+                ).ToList();
             }
             else
             {
-                filteredList = database.Where(entry => entry.Group == selectedCategory).ToList();
-            }
+                //pas de recherche en cours
+                if (treeViewGroups.SelectedNode == null) return;
+                string selectedCategory = treeViewGroups.SelectedNode.Text;
 
-            //remplissage de la liste
+                if (selectedCategory == this.currentVaultName)
+                {
+                    filteredList = database;
+                }
+                else
+                {
+                    filteredList = database.Where(entry => entry.Group == selectedCategory).ToList();
+                }
+            }
+            //remplissage de la listview pour affichage
             foreach (var entry in filteredList)
             {
                 var item = new ListViewItem(entry.Title);
@@ -149,8 +162,22 @@ namespace Vaulty
                 return;
             }
 
+            string defaultGroup = null;
+
+            //si un noeud est selectionné dans l'arbre
+            if (treeViewGroups.SelectedNode != null)
+            {
+                string selectedName = treeViewGroups.SelectedNode.Text;
+
+                //on verifie que ce n'est pas le noeud racine et que ce groupe existe bel et bien
+                if (selectedName != this.currentVaultName && groups.Contains(selectedName))
+                {
+                    defaultGroup = selectedName;
+                }
+            }
+
             //ouverture du formulaire d'ajout avec la liste des categories
-            using (var form = new AddEditEntryForm(this.groups))
+            using (var form = new AddEditEntryForm(this.groups, null, defaultGroup))
             {
                 if (form.ShowDialog() == DialogResult.OK)
                 {
@@ -407,6 +434,12 @@ namespace Vaulty
             var entry = (PasswordEntry)listViewEntries.SelectedItems[0].Tag;
 
             CopyToClipboardTemporary(entry.Url);
+        }
+
+        private void toolStripTextBoxSearchEntry_TextChanged(object sender, EventArgs e)
+        {
+            currentSearchTerm = toolStripTextBoxSearchEntry.Text;
+            RefreshListView();
         }
     }
 }

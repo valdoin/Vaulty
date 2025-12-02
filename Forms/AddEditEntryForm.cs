@@ -15,7 +15,7 @@ namespace Vaulty.Forms
     {
         public PasswordEntry FinalEntry { get; private set; } //l'objet final qu'il soit nouveau ou modifié
         private PasswordEntry OriginalEntry; //pour savoir si on modifie ou on crée
-        public AddEditEntryForm(List<string> availableGroups, PasswordEntry entryToEdit = null)
+        public AddEditEntryForm(List<string> availableGroups, PasswordEntry entryToEdit = null, string defaultGroup = null)
         {
             InitializeComponent();
 
@@ -39,8 +39,17 @@ namespace Vaulty.Forms
             }
             else
             {
-                //mode création donc selection par défaut
-                if (comboBoxGroup.Items.Count > 0) comboBoxGroup.SelectedIndex = 0;
+                //on reçoit un groupe valide (ex: "Email" ou "Général")
+                if (!string.IsNullOrEmpty(defaultGroup) && comboBoxGroup.Items.Contains(defaultGroup))
+                {
+                    comboBoxGroup.Text = defaultGroup;
+                }
+                //par defaut on prend le premier pour eviter les erreurs
+                else if (comboBoxGroup.Items.Count > 0)
+                {
+                    
+                    comboBoxGroup.SelectedIndex = 0;
+                }
             }
         }
 

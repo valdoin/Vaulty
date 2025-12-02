@@ -54,7 +54,8 @@
             buttonCopyPassword = new ToolStripButton();
             buttonCopyURL = new ToolStripButton();
             toolStripSeparator2 = new ToolStripSeparator();
-            buttonFindEntry = new ToolStripButton();
+            buttonSearchEntry = new ToolStripButton();
+            toolStripTextBoxSearchEntry = new ToolStripTextBox();
             contextMenuStripEntries = new ContextMenuStrip(components);
             ajouterUneEntréeToolStripMenuItem = new ToolStripMenuItem();
             supprimerLentréeToolStripMenuItem = new ToolStripMenuItem();
@@ -139,7 +140,7 @@
             // 
             // treeViewGroups
             // 
-            treeViewGroups.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            treeViewGroups.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             treeViewGroups.Location = new Point(0, 30);
             treeViewGroups.Name = "treeViewGroups";
             treeViewGroups.Size = new Size(459, 713);
@@ -212,7 +213,7 @@
             // toolStripUtils
             // 
             toolStripUtils.ImageScalingSize = new Size(20, 20);
-            toolStripUtils.Items.AddRange(new ToolStripItem[] { buttonAddEntry, toolStripSeparator1, buttonCopyUsername, buttonCopyPassword, buttonCopyURL, toolStripSeparator2, buttonFindEntry });
+            toolStripUtils.Items.AddRange(new ToolStripItem[] { buttonAddEntry, toolStripSeparator1, buttonCopyUsername, buttonCopyPassword, buttonCopyURL, toolStripSeparator2, buttonSearchEntry, toolStripTextBoxSearchEntry });
             toolStripUtils.Location = new Point(0, 28);
             toolStripUtils.Name = "toolStripUtils";
             toolStripUtils.Size = new Size(1378, 27);
@@ -269,14 +270,22 @@
             toolStripSeparator2.Name = "toolStripSeparator2";
             toolStripSeparator2.Size = new Size(6, 27);
             // 
-            // buttonFindEntry
+            // buttonSearchEntry
             // 
-            buttonFindEntry.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            buttonFindEntry.Image = (Image)resources.GetObject("buttonFindEntry.Image");
-            buttonFindEntry.ImageTransparentColor = Color.Magenta;
-            buttonFindEntry.Name = "buttonFindEntry";
-            buttonFindEntry.Size = new Size(29, 24);
-            buttonFindEntry.Text = "Chercher une entrée";
+            buttonSearchEntry.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            buttonSearchEntry.Image = (Image)resources.GetObject("buttonSearchEntry.Image");
+            buttonSearchEntry.ImageTransparentColor = Color.Magenta;
+            buttonSearchEntry.Name = "buttonSearchEntry";
+            buttonSearchEntry.Size = new Size(29, 24);
+            buttonSearchEntry.Text = "Chercher une entrée";
+            // 
+            // toolStripTextBoxSearchEntry
+            // 
+            toolStripTextBoxSearchEntry.AutoToolTip = true;
+            toolStripTextBoxSearchEntry.Name = "toolStripTextBoxSearchEntry";
+            toolStripTextBoxSearchEntry.Size = new Size(160, 27);
+            toolStripTextBoxSearchEntry.ToolTipText = "Chercher une entrée ";
+            toolStripTextBoxSearchEntry.TextChanged += toolStripTextBoxSearchEntry_TextChanged;
             // 
             // contextMenuStripEntries
             // 
@@ -403,7 +412,7 @@
         private ToolStripButton buttonCopyPassword;
         private ToolStripButton buttonCopyURL;
         private ToolStripSeparator toolStripSeparator2;
-        private ToolStripButton buttonFindEntry;
+        private ToolStripButton buttonSearchEntry;
         private ContextMenuStrip contextMenuStripAddDeleteGroup;
         private ToolStripMenuItem ajouterUneCatégorieToolStripMenuItem;
         private ToolStripMenuItem supprimerLaCatégorieToolStripMenuItem;
@@ -418,5 +427,6 @@
         private StatusStrip statusStripCopy;
         private ToolStripStatusLabel toolStripStatusLabelCopy;
         private ToolStripProgressBar toolStripProgressBarCopy;
+        private ToolStripTextBox toolStripTextBoxSearchEntry;
     }
 }

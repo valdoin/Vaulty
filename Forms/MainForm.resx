@@ -855,7 +855,7 @@
         3c7/EQAAAPSHXqk/0MwO9f+hIG/oYuD1PgAAAABAC/x/jDI1Zw1PrAoAAAAASUVORK5CYII=
 </value>
   </data>
-  <data name="buttonFindEntry.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="buttonSearchEntry.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAgAAAAIACAYAAAD0eNT6AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
         YQUAAAAJcEhZcwAAEnQAABJ0Ad5mH3gAAC2MSURBVHhe7d13tGZFlcbht5vYSM4gCg0KykgQRETSCEhQ
