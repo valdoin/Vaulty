@@ -36,6 +36,8 @@
             ouvrirToolStripMenuItem = new ToolStripMenuItem();
             sauvegarderToolStripMenuItem = new ToolStripMenuItem();
             quitterToolStripMenuItem = new ToolStripMenuItem();
+            toolStripSeparator3 = new ToolStripSeparator();
+            changerLeMotDePassetoolStripMenuItem = new ToolStripMenuItem();
             splitContainer1 = new SplitContainer();
             treeViewGroups = new TreeView();
             listViewEntries = new ListView();
@@ -90,7 +92,7 @@
             // 
             // fichierToolStripMenuItem
             // 
-            fichierToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { nouveauToolStripMenuItem, ouvrirToolStripMenuItem, sauvegarderToolStripMenuItem, quitterToolStripMenuItem });
+            fichierToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { nouveauToolStripMenuItem, ouvrirToolStripMenuItem, sauvegarderToolStripMenuItem, quitterToolStripMenuItem, toolStripSeparator3, changerLeMotDePassetoolStripMenuItem });
             fichierToolStripMenuItem.Name = "fichierToolStripMenuItem";
             fichierToolStripMenuItem.Size = new Size(66, 24);
             fichierToolStripMenuItem.Text = "Fichier";
@@ -98,28 +100,40 @@
             // nouveauToolStripMenuItem
             // 
             nouveauToolStripMenuItem.Name = "nouveauToolStripMenuItem";
-            nouveauToolStripMenuItem.Size = new Size(175, 26);
+            nouveauToolStripMenuItem.Size = new Size(256, 26);
             nouveauToolStripMenuItem.Text = "Nouveau";
             nouveauToolStripMenuItem.Click += nouveauToolStripMenuItem_Click;
             // 
             // ouvrirToolStripMenuItem
             // 
             ouvrirToolStripMenuItem.Name = "ouvrirToolStripMenuItem";
-            ouvrirToolStripMenuItem.Size = new Size(175, 26);
+            ouvrirToolStripMenuItem.Size = new Size(256, 26);
             ouvrirToolStripMenuItem.Text = "Ouvrir";
             // 
             // sauvegarderToolStripMenuItem
             // 
             sauvegarderToolStripMenuItem.Name = "sauvegarderToolStripMenuItem";
-            sauvegarderToolStripMenuItem.Size = new Size(175, 26);
+            sauvegarderToolStripMenuItem.Size = new Size(256, 26);
             sauvegarderToolStripMenuItem.Text = "Sauvegarder";
             // 
             // quitterToolStripMenuItem
             // 
             quitterToolStripMenuItem.Name = "quitterToolStripMenuItem";
-            quitterToolStripMenuItem.Size = new Size(175, 26);
+            quitterToolStripMenuItem.Size = new Size(256, 26);
             quitterToolStripMenuItem.Text = "Quitter";
             quitterToolStripMenuItem.Click += quitterToolStripMenuItem_Click;
+            // 
+            // toolStripSeparator3
+            // 
+            toolStripSeparator3.Name = "toolStripSeparator3";
+            toolStripSeparator3.Size = new Size(253, 6);
+            // 
+            // changerLeMotDePassetoolStripMenuItem
+            // 
+            changerLeMotDePassetoolStripMenuItem.Name = "changerLeMotDePassetoolStripMenuItem";
+            changerLeMotDePassetoolStripMenuItem.Size = new Size(256, 26);
+            changerLeMotDePassetoolStripMenuItem.Text = "Changer le mot de passe";
+            changerLeMotDePassetoolStripMenuItem.Click += changerLeMotDePassetoolStripMenuItem_Click;
             // 
             // splitContainer1
             // 
@@ -430,5 +444,7 @@
         private ToolStripStatusLabel toolStripStatusLabelCopy;
         private ToolStripProgressBar toolStripProgressBarCopy;
         private ToolStripTextBox toolStripTextBoxSearchEntry;
+        private ToolStripSeparator toolStripSeparator3;
+        private ToolStripMenuItem changerLeMotDePassetoolStripMenuItem;
     }
 }

@@ -154,7 +154,7 @@ namespace Vaulty.Forms
                 FinalEntry.Password = textBoxPassword.Text;
                 FinalEntry.Url = textBoxURL.Text;
                 FinalEntry.Notes = textBoxNotes.Text;
-                FinalEntry.ModifiedDate = DateTime.Now; 
+                FinalEntry.ModifiedDate = DateTime.Now;
             }
             this.DialogResult = DialogResult.OK;
             this.Close();

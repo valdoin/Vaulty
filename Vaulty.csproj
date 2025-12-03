@@ -6,11 +6,11 @@
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
-    <ApplicationIcon>assets\vaulty__1_-removebg-preview.ico</ApplicationIcon>
+    <ApplicationIcon>assets\vaulty-removebg-preview.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="assets\vaulty__1_-removebg-preview.ico" />
+    <Content Include="assets\vaulty-removebg-preview.ico" />
   </ItemGroup>
 
   <ItemGroup>

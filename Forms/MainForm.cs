@@ -407,32 +407,53 @@ namespace Vaulty
             CopyTimer.Stop();  //reset si déjà en cours
             CopyTimer.Start();
         }
-        private void copierLeNomDutilisateurToolStripMenuItem_Click(object sender, EventArgs e)
+        private void CopySelectedData(Func<Entry, string> select)
         {
             if (listViewEntries.SelectedItems.Count == 0) return;
             var entry = (Entry)listViewEntries.SelectedItems[0].Tag;
-            CopyToClipboardTemporary(entry.Username);
+            string texteACopier = select(entry);
+            CopyToClipboardTemporary(texteACopier);
+        }
+        private void copierLeNomDutilisateurToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            CopySelectedData(entry => entry.Username);
         }
 
         private void copierLeMotDePasseToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (listViewEntries.SelectedItems.Count == 0) return;
-            var entry = (Entry)listViewEntries.SelectedItems[0].Tag;
-            CopyToClipboardTemporary(entry.Password);
+            CopySelectedData(entry => entry.Password);
         }
 
         private void copierLURLToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (listViewEntries.SelectedItems.Count == 0) return;
-            var entry = (Entry)listViewEntries.SelectedItems[0].Tag;
-
-            CopyToClipboardTemporary(entry.Url);
+            CopySelectedData(entry => entry.Url);
         }
 
         private void toolStripTextBoxSearchEntry_TextChanged(object sender, EventArgs e)
         {
             currentSearchTerm = toolStripTextBoxSearchEntry.Text;
             RefreshListView();
+        }
+
+        private void changerLeMotDePassetoolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //on verifie qu'un coffre est ouvert pr eviter les erreurs
+            if (currentVault == null || string.IsNullOrEmpty(currentVault.MasterPasswordHash))
+            {
+                MessageBox.Show("Aucun coffre n'est ouvert.", "Impossible", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            //on passe le mdp actuel au form
+            using (var form = new ChangePasswordForm(currentVault.MasterPasswordHash))
+            {
+                if (form.ShowDialog() == DialogResult.OK)
+                {
+                    //nouveau mdp valide
+                    currentVault.MasterPasswordHash = form.NewPassword;
+                    MessageBox.Show("Votre mot de passe maître a été modifié avec succès !", "Succès", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
         }
     }
 }

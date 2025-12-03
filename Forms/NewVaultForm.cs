@@ -37,6 +37,12 @@ namespace Vaulty.Forms
                 return;
             }
 
+            //mdp trop court ?
+            if (pass.Length < 8)
+            {
+                MessageBox.Show("Le mot de passe doit contenir au moins 8 caractères pour être sécurisé.", "Mot de passe trop court", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
 
             //mdp identiques ?
             if (pass != confirm)
