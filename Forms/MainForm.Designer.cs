@@ -161,6 +161,7 @@
             listViewEntries.UseCompatibleStateImageBehavior = false;
             listViewEntries.View = View.Details;
             listViewEntries.SelectedIndexChanged += listViewEntries_SelectedIndexChanged;
+            listViewEntries.DoubleClick += modifierLentréeToolStripMenuItem_Click;
             listViewEntries.MouseUp += listViewEntries_MouseUp;
             // 
             // Titre

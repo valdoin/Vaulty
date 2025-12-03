@@ -13,9 +13,9 @@ namespace Vaulty.Forms
 {
     public partial class AddEditEntryForm : Form
     {
-        public PasswordEntry FinalEntry { get; private set; } //l'objet final qu'il soit nouveau ou modifié
-        private PasswordEntry OriginalEntry; //pour savoir si on modifie ou on crée
-        public AddEditEntryForm(List<string> availableGroups, PasswordEntry entryToEdit = null, string defaultGroup = null)
+        public Entry FinalEntry { get; private set; } //l'objet final qu'il soit nouveau ou modifié
+        private Entry OriginalEntry; //pour savoir si on modifie ou on crée
+        public AddEditEntryForm(List<string> availableGroups, Entry entryToEdit = null, string defaultGroup = null)
         {
             InitializeComponent();
 
@@ -135,7 +135,7 @@ namespace Vaulty.Forms
             if (OriginalEntry == null)
             {
                 //nouvelle entrée
-                FinalEntry = new PasswordEntry();
+                FinalEntry = new Entry();
             }
             else
             {

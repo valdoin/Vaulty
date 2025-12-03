@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Vaulty.Classes
 {
-    public class PasswordEntry
+    public class Entry
     {
         public string Uuid { get; set; } = Guid.NewGuid().ToString(); //id unique
         public string Group { get; set; } = "Général";

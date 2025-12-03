@@ -6,18 +6,13 @@ namespace Vaulty
 {
     public partial class MainForm : Form
     {
-        private string currentVaultName = "";
-        private List<PasswordEntry> database = new List<PasswordEntry>(); //on stocke les mdp en memoire avant de les stocker dans le fichier chiffré
-        private string masterPasswordHash = "";
-        private List<string> groups = new List<string>();
+        private Vault currentVault;
         private string currentSearchTerm = "";
         public MainForm()
 
         {
             InitializeComponent();
-            //categories par defaut, libre a l'utilisateur de les garder ou de les supprimer
-            groups.Add("Général");
-            groups.Add("Email");
+            currentVault = new Vault("Nouveau coffre", ""); //coffre brouillon uniquement pour l'initialisation
             LockInterface();
         }
 
@@ -27,10 +22,10 @@ namespace Vaulty
             treeViewGroups.Nodes.Clear();
 
             //creation de la racine
-            TreeNode root = new TreeNode(this.currentVaultName);
+            TreeNode root = new TreeNode(currentVault.Name);
 
             //ajout des catégories dynamiques
-            foreach (string cat in groups)
+            foreach (string cat in currentVault.Groups)
             {
                 root.Nodes.Add(cat);
             }
@@ -76,14 +71,14 @@ namespace Vaulty
         {
             listViewEntries.Items.Clear();
 
-            List<PasswordEntry> filteredList;
+            List<Entry> filteredList;
 
             //recherche en cours
             if (!string.IsNullOrWhiteSpace(currentSearchTerm))
             {
                 string term = currentSearchTerm.ToLower(); //recherche insensible a la casse
                 //on cherche dans toute la base, recherche sur le titre, l'username et les notes s'il y en a 
-                filteredList = database.Where(entry =>
+                filteredList = currentVault.Entries.Where(entry =>
                     (entry.Title != null && entry.Title.ToLower().Contains(term)) ||
                     (entry.Username != null && entry.Username.ToLower().Contains(term)) ||
                     (entry.Notes != null && entry.Notes.ToLower().Contains(term))
@@ -93,15 +88,15 @@ namespace Vaulty
             {
                 //pas de recherche en cours
                 if (treeViewGroups.SelectedNode == null) return;
-                string selectedCategory = treeViewGroups.SelectedNode.Text;
+                string selectedgroup = treeViewGroups.SelectedNode.Text;
 
-                if (selectedCategory == this.currentVaultName)
+                if (selectedgroup == currentVault.Name)
                 {
-                    filteredList = database;
+                    filteredList = currentVault.Entries;
                 }
                 else
                 {
-                    filteredList = database.Where(entry => entry.Group == selectedCategory).ToList();
+                    filteredList = currentVault.Entries.Where(entry => entry.Group == selectedgroup).ToList();
                 }
             }
             //remplissage de la listview pour affichage
@@ -130,10 +125,8 @@ namespace Vaulty
                 if (form.ShowDialog() == DialogResult.OK)
                 {
                     //user a defini un mdp valide
-                    this.database.Clear(); //on vide l'interface
-                    this.currentVaultName = form.VaultName;
-                    this.masterPasswordHash = form.EnteredPassword;
-                    MessageBox.Show("Nouvelle base créée avec succès !");
+                    this.currentVault = new Vault(form.VaultName, form.EnteredPassword);
+                    MessageBox.Show($"Le coffre '{currentVault.Name}' a été créé avec succès !");
                     UnlockInterface();
                 }
             }
@@ -147,14 +140,14 @@ namespace Vaulty
         private void buttonAddEntry_Click(object sender, EventArgs e)
         {
             //base de donnée ouverte ?
-            if (string.IsNullOrEmpty(masterPasswordHash))
+            if (string.IsNullOrEmpty(currentVault.MasterPasswordHash)) //notre vault brouillon est initialisé avec un mdp vide d'où cette verif
             {
                 MessageBox.Show("Veuillez créer ou ouvrir une base de données (Fichier > Nouveau).");
                 return;
             }
 
             //existe t'il au moins une categorie ?
-            if (groups.Count == 0)
+            if (currentVault.Groups.Count == 0)
             {
                 MessageBox.Show("Vous n'avez aucune catégorie !\n" +
                                 "Faites un Clic Droit sur 'Mon Coffre fort' pour en créer une nouvelle.",
@@ -170,19 +163,19 @@ namespace Vaulty
                 string selectedName = treeViewGroups.SelectedNode.Text;
 
                 //on verifie que ce n'est pas le noeud racine et que ce groupe existe bel et bien
-                if (selectedName != this.currentVaultName && groups.Contains(selectedName))
+                if (selectedName != currentVault.Name && currentVault.Groups.Contains(selectedName))
                 {
                     defaultGroup = selectedName;
                 }
             }
 
             //ouverture du formulaire d'ajout avec la liste des categories
-            using (var form = new AddEditEntryForm(this.groups, null, defaultGroup))
+            using (var form = new AddEditEntryForm(currentVault.Groups, null, defaultGroup))
             {
                 if (form.ShowDialog() == DialogResult.OK)
                 {
-                    PasswordEntry newEntry = form.FinalEntry;
-                    database.Add(newEntry);
+                    Entry newEntry = form.FinalEntry;
+                    currentVault.Entries.Add(newEntry);
                     RefreshListView();
                 }
             }
@@ -197,12 +190,12 @@ namespace Vaulty
                 {
                     string newGroupName = form.EnteredName;
                     //on vérifie si doublons
-                    if (groups.Contains(newGroupName))
+                    if (currentVault.Groups.Contains(newGroupName))
                     {
                         MessageBox.Show("Cette catégorie existe déjà !");
                         return;
                     }
-                    groups.Add(newGroupName);
+                    currentVault.Groups.Add(newGroupName);
                     if (treeViewGroups.Nodes.Count > 0)
                     {
                         treeViewGroups.Nodes[0].Nodes.Add(newGroupName);
@@ -223,21 +216,21 @@ namespace Vaulty
                 return;
             }
 
-            string categoryName = selectedNode.Text;
+            string groupName = selectedNode.Text;
 
             //la categorie selectionnée est elle vide ?
-            bool hasPasswords = database.Any(entry => entry.Group == categoryName);
+            bool hasPasswords = currentVault.Entries.Any(entry => entry.Group == groupName);
 
             if (hasPasswords)
             {
-                MessageBox.Show($"La catégorie '{categoryName}' contient des mots de passe.\nSupprimez-les d'abord.",
+                MessageBox.Show($"La catégorie '{groupName}' contient des mots de passe.\nSupprimez-les d'abord.",
                                 "Impossible", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            if (MessageBox.Show($"Supprimer '{categoryName}' ?", "Confirmer", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            if (MessageBox.Show($"Supprimer '{groupName}' ?", "Confirmer", MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
-                groups.Remove(categoryName);
+                currentVault.Groups.Remove(groupName);
                 selectedNode.Remove();
                 RefreshListView();
             }
@@ -346,12 +339,12 @@ namespace Vaulty
 
             //on recupere l'objet lié à la ligne
             ListViewItem selectedItem = listViewEntries.SelectedItems[0];
-            PasswordEntry entryToDelete = (PasswordEntry)selectedItem.Tag;
+            Entry entryToDelete = (Entry)selectedItem.Tag;
 
             if (MessageBox.Show($"Voulez-vous supprimer l'entrée '{entryToDelete.Title}' ?",
                                 "Supprimer", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
             {
-                database.Remove(entryToDelete);
+                currentVault.Entries.Remove(entryToDelete);
                 listViewEntries.Items.Remove(selectedItem);
             }
         }
@@ -362,10 +355,10 @@ namespace Vaulty
 
             //on recupere l'objet selectionné
             var selectedItem = listViewEntries.SelectedItems[0];
-            var entryToEdit = (PasswordEntry)selectedItem.Tag;
+            var entryToEdit = (Entry)selectedItem.Tag;
 
             //ouvrir le formulaire en lui passant l'objet et la liste des groupes
-            using (var form = new AddEditEntryForm(this.groups, entryToEdit))
+            using (var form = new AddEditEntryForm(currentVault.Groups, entryToEdit))
             {
                 if (form.ShowDialog() == DialogResult.OK)
                 {
@@ -417,21 +410,21 @@ namespace Vaulty
         private void copierLeNomDutilisateurToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (listViewEntries.SelectedItems.Count == 0) return;
-            var entry = (PasswordEntry)listViewEntries.SelectedItems[0].Tag;
+            var entry = (Entry)listViewEntries.SelectedItems[0].Tag;
             CopyToClipboardTemporary(entry.Username);
         }
 
         private void copierLeMotDePasseToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (listViewEntries.SelectedItems.Count == 0) return;
-            var entry = (PasswordEntry)listViewEntries.SelectedItems[0].Tag;
+            var entry = (Entry)listViewEntries.SelectedItems[0].Tag;
             CopyToClipboardTemporary(entry.Password);
         }
 
         private void copierLURLToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (listViewEntries.SelectedItems.Count == 0) return;
-            var entry = (PasswordEntry)listViewEntries.SelectedItems[0].Tag;
+            var entry = (Entry)listViewEntries.SelectedItems[0].Tag;
 
             CopyToClipboardTemporary(entry.Url);
         }
