@@ -46,6 +46,7 @@
             buttonOK = new Button();
             labelGroup = new Label();
             comboBoxGroup = new ComboBox();
+            labelPasswordComplexity = new Label();
             SuspendLayout();
             // 
             // labelTitle
@@ -195,6 +196,15 @@
             comboBoxGroup.Size = new Size(151, 28);
             comboBoxGroup.TabIndex = 16;
             // 
+            // labelPasswordComplexity
+            // 
+            labelPasswordComplexity.AutoSize = true;
+            labelPasswordComplexity.Location = new Point(12, 184);
+            labelPasswordComplexity.Name = "labelPasswordComplexity";
+            labelPasswordComplexity.Size = new Size(92, 20);
+            labelPasswordComplexity.TabIndex = 17;
+            labelPasswordComplexity.Text = "Complexité :";
+            // 
             // AddEditEntryForm
             // 
             AcceptButton = buttonOK;
@@ -202,6 +212,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             CancelButton = buttonCancel;
             ClientSize = new Size(596, 413);
+            Controls.Add(labelPasswordComplexity);
             Controls.Add(comboBoxGroup);
             Controls.Add(labelGroup);
             Controls.Add(buttonOK);
@@ -248,5 +259,6 @@
         private Button buttonOK;
         private Label labelGroup;
         private ComboBox comboBoxGroup;
+        private Label labelPasswordComplexity;
     }
 }
