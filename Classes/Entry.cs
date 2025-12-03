@@ -16,5 +16,18 @@ namespace Vaulty.Classes
         public string Url { get; set; }
         public string Notes { get; set; }
         public DateTime ModifiedDate { get; set; } = DateTime.Now;
+
+        public Entry() { }//pour la serialisation
+
+        public Entry(string group, string title, string username, string password, string url, string notes)
+        {
+            Group = group;
+            Title = title;
+            Username = username;
+            Password = password;
+            Url = url;
+            Notes = notes;
+        }
     }
+
 }

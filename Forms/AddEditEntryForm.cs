@@ -132,26 +132,30 @@ namespace Vaulty.Forms
                 return;
             }
 
+            string group = comboBoxGroup.Text;
+            string title = textBoxTitle.Text;
+            string user = textBoxUsername.Text;
+            string pass = textBoxPassword.Text;
+            string url = textBoxURL.Text;
+            string notes = textBoxNotes.Text;
+
             if (OriginalEntry == null)
             {
                 //nouvelle entrée
-                FinalEntry = new Entry();
+                FinalEntry = new Entry(group, title, user, pass, url, notes);
             }
             else
             {
                 //on modifie une entrée existante
                 FinalEntry = OriginalEntry;
+                FinalEntry.Group = comboBoxGroup.Text;
+                FinalEntry.Title = textBoxTitle.Text;
+                FinalEntry.Username = textBoxUsername.Text;
+                FinalEntry.Password = textBoxPassword.Text;
+                FinalEntry.Url = textBoxURL.Text;
+                FinalEntry.Notes = textBoxNotes.Text;
+                FinalEntry.ModifiedDate = DateTime.Now; 
             }
-
-            //on met a jour les propriétes de l'objet qu'il soit nouveau ou vieux
-            FinalEntry.Group = comboBoxGroup.Text;
-            FinalEntry.Title = textBoxTitle.Text;
-            FinalEntry.Username = textBoxUsername.Text;
-            FinalEntry.Password = textBoxPassword.Text;
-            FinalEntry.Url = textBoxURL.Text;
-            FinalEntry.Notes = textBoxNotes.Text;
-            FinalEntry.ModifiedDate = DateTime.Now; //on met a jour la date de modif
-
             this.DialogResult = DialogResult.OK;
             this.Close();
         }
