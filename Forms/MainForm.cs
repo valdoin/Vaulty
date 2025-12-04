@@ -587,7 +587,17 @@ namespace Vaulty
 
             if (string.IsNullOrEmpty(currentMasterPassword))
             {
-                currentMasterPassword = Prompt.ShowDialog("Mot de passe maître :", "Chiffrement");
+                using (var form = new CheckPasswordForm())
+                {
+                    if (form.ShowDialog() == DialogResult.OK)
+                    {
+                        currentMasterPassword = form.EnteredPassword;
+                    }
+                    else
+                    {
+                        return;
+                    }
+                }
 
                 if (string.IsNullOrWhiteSpace(currentMasterPassword))
                 {
@@ -615,9 +625,23 @@ namespace Vaulty
                 ofd.Filter = "Vaulty Vault (*.vault)|*.vault";
                 ofd.Title = "Ouvrir un coffre";
 
+                // 1. On vérifie si l'utilisateur a choisi un fichier
                 if (ofd.ShowDialog() == DialogResult.OK)
                 {
-                    string masterPassword = Prompt.ShowDialog("Mot de passe maître :", "Déchiffrement");
+                    string masterPassword = "";
+
+                    // 2. On demande le mot de passe
+                    using (var form = new CheckPasswordForm())
+                    {
+                        if (form.ShowDialog() == DialogResult.OK)
+                        {
+                            masterPassword = form.EnteredPassword;
+                        }
+                        else
+                        {
+                            return; 
+                        }
+                    }
 
                     if (string.IsNullOrWhiteSpace(masterPassword))
                     {
@@ -629,26 +653,20 @@ namespace Vaulty
 
                     if (loadedVault == null)
                     {
-                        MessageBox.Show("Mot de passe incorrect ou fichier corrompu.");
+                        MessageBox.Show("Mot de passe incorrect ou fichier corrompu.", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
                     }
 
-                    // Remplace l'ancien coffre par le nouveau
                     currentVault = loadedVault;
-
-                    // Recharge l'interface
                     RefreshVaultDisplay();
-
                     MessageBox.Show("Coffre chargé !");
-                    currentVaultFilePath = ofd.FileName;    
-                    currentMasterPassword = masterPassword; 
-
+                    currentVaultFilePath = ofd.FileName;
+                    currentMasterPassword = masterPassword;
                     isAutoLocked = false;
                     lastActivityTime = DateTime.Now;
                     inactivityTimer.Start();
-
                 }
             }
         }
     }
-}
+}   
