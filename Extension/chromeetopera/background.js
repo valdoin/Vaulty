@@ -5,7 +5,7 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
         const url = new URL(tab.url);
         const site = url.hostname;
 
-        fetch(`http://localhost:50000/credentials?site=${site}`)
+        fetch(`http://localhost:8080/credentials?site=${site}`)
             .then(res => {
                 if (!res.ok) throw new Error("Pas d'identifiants");
                 return res.json();
