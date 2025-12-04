@@ -8,7 +8,7 @@ namespace Vaulty.Classes
 {
     public static class Crypto
     {
-        // 1) Dérivation de la clé depuis le mot de passe
+        // Dérivation de la clé depuis le mot de passe
         public static byte[] DeriveKey(string password, byte[] salt)
         {
             using (var pbkdf2 = new Rfc2898DeriveBytes(password, salt, 100000, HashAlgorithmName.SHA256))
@@ -17,7 +17,7 @@ namespace Vaulty.Classes
             }
         }
 
-        // 2) Chiffrement JSON -> bytes chiffrés
+        // Chiffrement JSON -> bytes chiffrés
         public static byte[] EncryptVault(string json, string password)
         {
             byte[] salt = RandomNumberGenerator.GetBytes(16);
@@ -47,7 +47,7 @@ namespace Vaulty.Classes
             }
         }
 
-        // 3) Déchiffrement bytes -> JSON
+        // Déchiffrement bytes -> JSON
         public static string DecryptVault(byte[] data, string password)
         {
             byte[] salt = data.Take(16).ToArray();

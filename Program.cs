@@ -22,7 +22,7 @@ namespace Vaulty
 
             // Démarre le serveur local UNE SEULE FOIS pour toute l'appli
             Server = new LocalServer();
-            Server.Start(50000); // port qu'on a vérifié libre
+            Server.Start(8080); // port qu'on a vérifié libre
 
             // Lance l'UI
             Application.Run(MainFormInstance);
