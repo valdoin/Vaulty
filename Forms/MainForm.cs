@@ -8,10 +8,7 @@ namespace Vaulty
     {
         
         private Vault currentVault;
-        private LocalServer server;
         private bool isAutoLocked = false;
-
-
         public Vault CurrentVault => currentVault;
         private string currentSearchTerm = "";
         private string currentVaultFilePath;      // chemin du fichier .vault
