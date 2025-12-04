@@ -52,32 +52,53 @@ namespace Vaulty.Forms
                 }
             }
         }
+        private string GeneratePassword(int length, bool upper, bool lower, bool digits, bool symbols)
+        {
+            string u = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            string l = "abcdefghijklmnopqrstuvwxyz";
+            string d = "0123456789";
+            string s = "!@#$%^&*()-_=+[]{};:,.<>/?";
+
+            string pool = "";
+
+            if (upper) pool += u;
+            if (lower) pool += l;
+            if (digits) pool += d;
+            if (symbols) pool += s;
+
+            if (pool.Length == 0)
+                return "";
+
+            Random rng = new Random();
+            char[] pwd = new char[length];
+
+            for (int i = 0; i < length; i++)
+                pwd[i] = pool[rng.Next(pool.Length)];
+
+            return new string(pwd);
+        }
+
+
 
         //générateur de mot de passe
         private void buttonGeneratePassword_Click(object sender, EventArgs e)
         {
-            //liste etendue des caracteres min/maj/chiffres/symboles
-            const string lowercase = "abcdefghijklmnopqrstuvwxyz";
-            const string uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-            const string digits = "0123456789";
-            const string specials = "!@#$%^&*()_-+=[{]};:<>|./?";
+            int length = (int)numericLength.Value;
 
-            string allChars = lowercase + uppercase + digits + specials;
+            string password = GeneratePassword(
+                length,
+                checkUpper.Checked,
+                checkLower.Checked,
+                checkDigits.Checked,
+                checkSymbols.Checked
+            );
 
-            Random random = new Random();
-            //selon l'ANSSI, mdp de plus de 15 caracteres avec min/maj/chiffres/symboles => tres fort
-            char[] stringChars = new char[20];
+            textBoxPassword.Text = password;
 
-            for (int i = 0; i < stringChars.Length; i++)
-            {
-                stringChars[i] = allChars[random.Next(allChars.Length)];
-            }
-
-            string finalPass = new String(stringChars);
-
-            textBoxPassword.Text = finalPass;
-            // checkBoxShowPassword.Checked = true; 
+            // Mise à jour de TA barre de progression
+            UpdateStrengthMeter(password);
         }
+
 
         //calcul de la force du mot de passe
         private void UpdateStrengthMeter(string pass)
@@ -165,5 +186,6 @@ namespace Vaulty.Forms
             this.DialogResult = DialogResult.Cancel;
             this.Close();
         }
+
     }
 }

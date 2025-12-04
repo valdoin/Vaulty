@@ -6,14 +6,32 @@ namespace Vaulty
 {
     public partial class MainForm : Form
     {
+        
         private Vault currentVault;
+        private LocalServer server;
+        private bool isAutoLocked = false;
+
+
+        public Vault CurrentVault => currentVault;
         private string currentSearchTerm = "";
+        private string currentVaultFilePath;      // chemin du fichier .vault
+        private string currentMasterPassword;
+
+        private System.Windows.Forms.Timer inactivityTimer;
+        private DateTime lastActivityTime;
+        private int autoLockMinutes = 15;
         public MainForm()
 
         {
             InitializeComponent();
             currentVault = new Vault("Nouveau coffre", ""); //coffre brouillon uniquement pour l'initialisation
             LockInterface();
+            inactivityTimer = new System.Windows.Forms.Timer();
+            inactivityTimer.Interval = 1000; // vérifie toutes les 1 sec
+            inactivityTimer.Tick += InactivityTimer_Tick;
+            inactivityTimer.Start();
+
+            lastActivityTime = DateTime.Now;
         }
 
         //gestion du treeview
@@ -37,6 +55,27 @@ namespace Vaulty
             if (root.Nodes.Count > 0) treeViewGroups.SelectedNode = root.Nodes[0];
         }
 
+        private void AutoSave()
+        {
+         
+            if (currentVault == null ||
+                string.IsNullOrEmpty(currentVault.MasterPasswordHash) ||
+                string.IsNullOrEmpty(currentVaultFilePath) ||
+                string.IsNullOrEmpty(currentMasterPassword))
+                return;
+
+            try
+            {
+                currentVault.Save(currentVaultFilePath, currentMasterPassword);
+               
+            }
+            catch
+            {
+            }
+        }
+
+
+
         //gestion de l'etat de l'interface
         private void LockInterface()
         {
@@ -49,6 +88,40 @@ namespace Vaulty
             if (Controls.Find("buttonAddEntry", true).Length > 0)
                 Controls.Find("buttonAddEntry", true)[0].Enabled = false;
         }
+
+        private void InactivityTimer_Tick(object sender, EventArgs e)
+        {
+            // pas de coffre ouvert -> on ne fait rien
+            if (currentVault == null || string.IsNullOrEmpty(currentVault.MasterPasswordHash))
+                return;
+
+            // déjà verrouillé -> on ne refait rien
+            if (isAutoLocked)
+                return;
+
+            if ((DateTime.Now - lastActivityTime).TotalMinutes >= autoLockMinutes)
+            {
+                AutoLockVault();
+            }
+        }
+
+
+        private void AutoLockVault()
+        {
+            if (isAutoLocked) return;       
+            isAutoLocked = true;
+
+            LockInterface();
+            inactivityTimer.Stop();           
+
+            MessageBox.Show(
+                "Coffre verrouillé pour inactivité.",
+                "Auto-Lock",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information
+            );
+        }
+
 
         private void UnlockInterface()
         {
@@ -128,6 +201,12 @@ namespace Vaulty
                     this.currentVault = new Vault(form.VaultName, form.EnteredPassword);
                     MessageBox.Show($"Le coffre '{currentVault.Name}' a été créé avec succès !");
                     UnlockInterface();
+                    currentVaultFilePath = null;            
+                    currentMasterPassword = form.EnteredPassword;  
+                    isAutoLocked = false;
+                    lastActivityTime = DateTime.Now;
+                    inactivityTimer.Start();
+
                 }
             }
         }
@@ -177,6 +256,7 @@ namespace Vaulty
                     Entry newEntry = form.FinalEntry;
                     currentVault.Entries.Add(newEntry);
                     RefreshListView();
+                    AutoSave();
                 }
             }
         }
@@ -200,6 +280,8 @@ namespace Vaulty
                     {
                         treeViewGroups.Nodes[0].Nodes.Add(newGroupName);
                         treeViewGroups.Nodes[0].Expand();
+                        AutoSave();
+
                     }
                 }
             }
@@ -233,6 +315,7 @@ namespace Vaulty
                 currentVault.Groups.Remove(groupName);
                 selectedNode.Remove();
                 RefreshListView();
+                AutoSave() ;
             }
         }
 
@@ -275,6 +358,8 @@ namespace Vaulty
 
         private void listViewEntries_MouseUp(object sender, MouseEventArgs e)
         {
+            lastActivityTime = DateTime.Now;
+
             //on ne reagit qu'au clic droit
             if (e.Button == MouseButtons.Right)
             {
@@ -346,6 +431,7 @@ namespace Vaulty
             {
                 currentVault.Entries.Remove(entryToDelete);
                 listViewEntries.Items.Remove(selectedItem);
+                AutoSave();
             }
         }
 
@@ -364,6 +450,7 @@ namespace Vaulty
                 {
                     //l'objet a été modifié directement par référence dans le form donc pas besoin d'add ou remove
                     RefreshListView();
+                    AutoSave();
                 }
             }
         }
@@ -451,7 +538,115 @@ namespace Vaulty
                 {
                     //nouveau mdp valide
                     currentVault.MasterPasswordHash = form.NewPassword;
+                    currentMasterPassword = form.NewPassword;
                     MessageBox.Show("Votre mot de passe maître a été modifié avec succès !", "Succès", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    AutoSave();
+                }
+            }
+        }
+
+        private void btnTestCrypto_Click(object sender, EventArgs e)
+        {
+            string originalJson = "{\"site\":\"google\",\"password\":\"1234\"}";
+            string password = "test123";
+
+            // Chiffrement
+            var encrypted = Crypto.EncryptVault(originalJson, password);
+
+            // Déchiffrement
+            string decrypted = Crypto.DecryptVault(encrypted, password);
+
+            MessageBox.Show(
+                $"Original : {originalJson}\n" +
+                $"Déchiffré : {decrypted}",
+                "Test Crypto"
+            );
+        }
+
+        private void sauvegarderToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (currentVault == null || string.IsNullOrEmpty(currentVault.MasterPasswordHash))
+            {
+                MessageBox.Show("Aucun coffre n'est ouvert.", "Impossible", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (string.IsNullOrEmpty(currentVaultFilePath))
+            {
+                using (SaveFileDialog sfd = new SaveFileDialog())
+                {
+                    sfd.Filter = "Vaulty Vault (*.vault)|*.vault";
+                    sfd.Title = "Enregistrer le coffre";
+
+                    if (sfd.ShowDialog() != DialogResult.OK)
+                        return;
+
+                    currentVaultFilePath = sfd.FileName;
+                }
+            }
+
+            if (string.IsNullOrEmpty(currentMasterPassword))
+            {
+                currentMasterPassword = Prompt.ShowDialog("Mot de passe maître :", "Chiffrement");
+
+                if (string.IsNullOrWhiteSpace(currentMasterPassword))
+                {
+                    MessageBox.Show("Mot de passe invalide.");
+                    return;
+                }
+            }
+
+            currentVault.Save(currentVaultFilePath, currentMasterPassword);
+            MessageBox.Show("Vault enregistré avec succès !");
+        }
+
+
+        private void RefreshVaultDisplay()
+        {
+            InitializeTreeView();
+            RefreshListView();
+        }
+
+
+        private void ouvrirToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (OpenFileDialog ofd = new OpenFileDialog())
+            {
+                ofd.Filter = "Vaulty Vault (*.vault)|*.vault";
+                ofd.Title = "Ouvrir un coffre";
+
+                if (ofd.ShowDialog() == DialogResult.OK)
+                {
+                    string masterPassword = Prompt.ShowDialog("Mot de passe maître :", "Déchiffrement");
+
+                    if (string.IsNullOrWhiteSpace(masterPassword))
+                    {
+                        MessageBox.Show("Mot de passe invalide.");
+                        return;
+                    }
+
+                    Vault loadedVault = Vault.Load(ofd.FileName, masterPassword);
+
+                    if (loadedVault == null)
+                    {
+                        MessageBox.Show("Mot de passe incorrect ou fichier corrompu.");
+                        return;
+                    }
+
+                    // Remplace l'ancien coffre par le nouveau
+                    currentVault = loadedVault;
+
+                    // Recharge l'interface
+                    RefreshVaultDisplay();
+
+                    MessageBox.Show("Coffre chargé !");
+                    currentVaultFilePath = ofd.FileName;    
+                    currentMasterPassword = masterPassword; 
+
+                    isAutoLocked = false;
+                    lastActivityTime = DateTime.Now;
+                    inactivityTimer.Start();
+
                 }
             }
         }
