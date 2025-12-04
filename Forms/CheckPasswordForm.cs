@@ -24,7 +24,7 @@ namespace Vaulty.Forms
             if (string.IsNullOrWhiteSpace(textBoxCheckPassword.Text))
             {
                 MessageBox.Show("Le champ ne peut pas être vide.", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                this.DialogResult = DialogResult.None; 
+                this.DialogResult = DialogResult.None;
                 return;
             }
 

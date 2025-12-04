@@ -6,7 +6,7 @@ namespace Vaulty
 {
     public partial class MainForm : Form
     {
-        
+
         private Vault currentVault;
         private bool isAutoLocked = false;
         public Vault CurrentVault => currentVault;
@@ -54,7 +54,7 @@ namespace Vaulty
 
         private void AutoSave()
         {
-         
+
             if (currentVault == null ||
                 string.IsNullOrEmpty(currentVault.MasterPasswordHash) ||
                 string.IsNullOrEmpty(currentVaultFilePath) ||
@@ -64,7 +64,7 @@ namespace Vaulty
             try
             {
                 currentVault.Save(currentVaultFilePath, currentMasterPassword);
-               
+
             }
             catch
             {
@@ -105,11 +105,11 @@ namespace Vaulty
 
         private void AutoLockVault()
         {
-            if (isAutoLocked) return;       
+            if (isAutoLocked) return;
             isAutoLocked = true;
 
             LockInterface();
-            inactivityTimer.Stop();           
+            inactivityTimer.Stop();
 
             MessageBox.Show(
                 "Coffre verrouillé pour inactivité.",
@@ -198,8 +198,8 @@ namespace Vaulty
                     this.currentVault = new Vault(form.VaultName, form.EnteredPassword);
                     MessageBox.Show($"Le coffre '{currentVault.Name}' a été créé avec succès !");
                     UnlockInterface();
-                    currentVaultFilePath = null;            
-                    currentMasterPassword = form.EnteredPassword;  
+                    currentVaultFilePath = null;
+                    currentMasterPassword = form.EnteredPassword;
                     isAutoLocked = false;
                     lastActivityTime = DateTime.Now;
                     inactivityTimer.Start();
@@ -312,7 +312,7 @@ namespace Vaulty
                 currentVault.Groups.Remove(groupName);
                 selectedNode.Remove();
                 RefreshListView();
-                AutoSave() ;
+                AutoSave();
             }
         }
 
@@ -621,13 +621,9 @@ namespace Vaulty
             {
                 ofd.Filter = "Vaulty Vault (*.vault)|*.vault";
                 ofd.Title = "Ouvrir un coffre";
-
-                // 1. On vérifie si l'utilisateur a choisi un fichier
                 if (ofd.ShowDialog() == DialogResult.OK)
                 {
                     string masterPassword = "";
-
-                    // 2. On demande le mot de passe
                     using (var form = new CheckPasswordForm())
                     {
                         if (form.ShowDialog() == DialogResult.OK)
@@ -636,7 +632,7 @@ namespace Vaulty
                         }
                         else
                         {
-                            return; 
+                            return;
                         }
                     }
 
@@ -653,8 +649,10 @@ namespace Vaulty
                         MessageBox.Show("Mot de passe incorrect ou fichier corrompu.", "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
                     }
-
+                    //remplace l'ancien coffre par le nouveau
                     currentVault = loadedVault;
+                    //recharge l'interface
+                    UnlockInterface();
                     RefreshVaultDisplay();
                     MessageBox.Show("Coffre chargé !");
                     currentVaultFilePath = ofd.FileName;
@@ -666,4 +664,4 @@ namespace Vaulty
             }
         }
     }
-}   
+}

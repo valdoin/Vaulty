@@ -86,7 +86,8 @@
             Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
             Name = "CheckPasswordForm";
-            Text = "CheckPasswordForm";
+            StartPosition = FormStartPosition.CenterParent;
+            Text = "Mot de passe maître";
             ResumeLayout(false);
             PerformLayout();
         }
